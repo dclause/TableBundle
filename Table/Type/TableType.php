@@ -2,12 +2,11 @@
 
 namespace EMC\TableBundle\Table\Type;
 
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Doctrine\Common\Persistence\ObjectManager;
 use EMC\TableBundle\Table\Column\ColumnInterface;
 use EMC\TableBundle\Provider\DataProviderInterface;
 use EMC\TableBundle\Provider\QueryConfigInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use EMC\TableBundle\Table\TableBuilderInterface;
 use EMC\TableBundle\Table\TableInterface;
 use EMC\TableBundle\Table\TableView;
@@ -29,7 +28,7 @@ abstract class TableType implements TableTypeInterface {
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver, array $defaultOptions) {
+    public function setDefaultOptions(OptionsResolver $resolver, array $defaultOptions) {
         
         if (!class_exists($defaultOptions['data_provider'])) {
             throw new \UnexpectedValueException('data_provider must a valid class name');
@@ -60,35 +59,31 @@ abstract class TableType implements TableTypeInterface {
             'export_route' => $defaultOptions['export_route'],
         ));
 
-        $resolver->setAllowedTypes(array(
-            'name' => 'string',
-            'route' => 'string',
-            'data' => array('null', 'array'),
-            'params' => 'array',
-            'attrs' => 'array',
-            'data_provider' => array('null', 'EMC\TableBundle\Provider\DataProviderInterface'),
-            'default_sorts' => 'array',
-            'limit' => 'int',
-            'caption' => 'string',
-            'subtable' => array('null', 'EMC\TableBundle\Table\Type\TableTypeInterface'),
-            'subtable_options' => 'array',
-            'subtable_params' => 'array',
-            'rows_pad' => 'bool',
-            'rows_params' => 'array',
-            'allow_select' => 'bool',
-            'select_route' => 'string',
-            'export' => 'array',
-            'export_route' => 'string',
-        ));
+	    $resolver->setAllowedTypes('name', 'string');
+	    $resolver->setAllowedTypes('route', 'string');
+	    $resolver->setAllowedTypes('data', array('null', 'array'));
+	    $resolver->setAllowedTypes('params', 'array');
+	    $resolver->setAllowedTypes('attrs', 'array');
+	    $resolver->setAllowedTypes('data_provider', array('null', 'EMC\TableBundle\Provider\DataProviderInterface'));
+	    $resolver->setAllowedTypes('default_sorts', 'array');
+	    $resolver->setAllowedTypes('limit', 'int');
+	    $resolver->setAllowedTypes('caption', 'string');
+	    $resolver->setAllowedTypes('subtable', array('null', 'EMC\TableBundle\Table\Type\TableTypeInterface'));
+	    $resolver->setAllowedTypes('subtable_options', 'array');
+	    $resolver->setAllowedTypes('subtable_params', 'array');
+	    $resolver->setAllowedTypes('rows_pad', 'bool');
+	    $resolver->setAllowedTypes('rows_params', 'array');
+	    $resolver->setAllowedTypes('allow_select', 'bool');
+	    $resolver->setAllowedTypes('select_route', 'string');
+	    $resolver->setAllowedTypes('export', 'array');
+	    $resolver->setAllowedTypes('export_route', 'string');
 
-        $resolver->setNormalizers(array(
-            'allow_select' => function($options, $allowSelect) {
-        if ($allowSelect && count($options['rows_params']) === 0) {
-            throw new \InvalidArgumentException('rows_params is required if allow_select is true');
-        }
-        return $allowSelect;
-    }
-        ));
+        $resolver->setNormalizer('allow_select', function($options, $allowSelect) {
+	        if ($allowSelect && count($options['rows_params']) === 0) {
+	            throw new \InvalidArgumentException('rows_params is required if allow_select is true');
+	        }
+	        return $allowSelect;
+	    });
     }
 
     /**

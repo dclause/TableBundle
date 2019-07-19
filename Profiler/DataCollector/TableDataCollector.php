@@ -3,11 +3,11 @@
 namespace EMC\TableBundle\Profiler\DataCollector;
 
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
-use Symfony\Component\HttpKernel\DataCollector\Util\ValueExporter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use EMC\TableBundle\Table\TableInterface;
 use EMC\TableBundle\Table\Column\ColumnInterface;
+use Symfony\Component\VarDumper\Cloner\VarCloner;
 
 /**
  * TableDataCollector
@@ -19,13 +19,23 @@ use EMC\TableBundle\Table\Column\ColumnInterface;
 class TableDataCollector extends DataCollector {
 
     /**
-     * @var ValueExporter
+     * @var VarCloner
      */
-    private $valueExporter;
+    private $exporter;
 
-    function __construct(ValueExporter $valueExporter = null) {
-        $this->valueExporter = $valueExporter ? : new ValueExporter();
+    function __construct(VarCloner $exporter = null) {
+        $this->exporter = $exporter ? : new VarCloner();
     }
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function reset()
+	{
+		$this->data = array(
+			'tables' => array()
+		);
+	}
 
     public function collect(Request $request, Response $response, \Exception $exception = null) {
         
@@ -52,12 +62,12 @@ class TableDataCollector extends DataCollector {
         
         foreach ($table->getOptions() as $option => $value) {
             if (substr($option, 0, 1) !== '_') {
-                $data['resolved_options'][$option] = $this->valueExporter->exportValue($value);
+                $data['resolved_options'][$option] = $this->exporter->cloneVar($value);
             }
         }
         
         foreach( $options['_passed_options'] as $option => $value ) {
-            $data['passed_options'][$option] = $this->valueExporter->exportValue($value);
+            $data['passed_options'][$option] = $this->exporter->cloneVar($value);
         }
         
         ksort($data['passed_options']);
@@ -84,12 +94,12 @@ class TableDataCollector extends DataCollector {
         
         foreach ($column->getOptions() as $option => $value) {
             if (substr($option, 0, 1) !== '_') {
-                $data['resolved_options'][$option] = $this->valueExporter->exportValue($value);
+                $data['resolved_options'][$option] = $this->exporter->cloneVar($value);
             }
         }
         
         foreach( $column->getOption('_passed_options') as $option => $value ) {
-            $data['passed_options'][$option] = $this->valueExporter->exportValue($value);
+            $data['passed_options'][$option] = $this->exporter->cloneVar($value);
         }
         
         return $data;
@@ -112,7 +122,7 @@ class TableDataCollector extends DataCollector {
         $data = &$this->data['tables'][$id];
 
         $data['query_result'] = array(
-            'query' => $this->valueExporter->exportValue($options['_query']),
+            'query' => $this->exporter->cloneVar($options['_query']),
             'total' => $table->getData()->getCount()
         );
         
@@ -120,7 +130,7 @@ class TableDataCollector extends DataCollector {
         $count = count($rows);
         for( $idx=0; $idx<$count; $idx++){
             $row = $rows[$idx]; 
-            $data['query_result']['rows ' . $idx] = $this->valueExporter->exportValue($row);
+            $data['query_result']['rows ' . $idx] = $this->exporter->cloneVar($row);
             if ( $idx === 10 ) {
                 $data['query_result']['...'] = '';
                 $idx = max($idx, count($rows) - 4);

@@ -2,7 +2,7 @@
 
 namespace EMC\TableBundle\Table\Type\Decorator;
 
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Doctrine\Common\Persistence\ObjectManager;
 use EMC\TableBundle\Table\Type\TableTypeInterface;
 use EMC\TableBundle\Provider\QueryConfigInterface;
@@ -75,7 +75,7 @@ abstract class TableDecorator implements TableTypeInterface, TableDecoratorInter
         return $this->type->getQueryBuilder($entityManager, $params);
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver, array $defaultOptions) {
+    public function setDefaultOptions(OptionsResolver $resolver, array $defaultOptions) {
         return $this->type->setDefaultOptions($resolver, $defaultOptions);
     }
     

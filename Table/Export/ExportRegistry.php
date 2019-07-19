@@ -3,13 +3,16 @@
 namespace EMC\TableBundle\Table\Export;
 
 use Symfony\Component\DependencyInjection\ContainerAware;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
 /**
  * ExportRegistry
  *
  * @author Chafiq El Mechrafi <chafiq.elmechrafi@gmail.com>
  */
-class ExportRegistry extends ContainerAware implements ExportRegistryInterface {
+class ExportRegistry implements ExportRegistryInterface, ContainerAwareInterface {
+	use ContainerAwareTrait;
 
     /**
      * @var array

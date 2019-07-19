@@ -1,21 +1,21 @@
 services:
     table.factory:
         class: EMC\TableBundle\Table\TableFactory
-        arguments: [@doctrine.orm.entity_manager, @event_dispatcher, @table.session, @table.column.factory, @table.export.registry, %emc_table.default_options%, %emc_table.default_column_options%]
+        arguments: ['@doctrine.orm.entity_manager', '@event_dispatcher', '@table.session', '@table.column.factory', '@table.export.registry', '%emc_table.default_options%', '%emc_table.default_column_options%']
     
     table.session:
         class: EMC\TableBundle\Session\TableSession
-        arguments: [@session]
+        arguments: ['@session']
     
     table.listener:
         class: EMC\TableBundle\Listener\TableListener
-        arguments: [@table.session]
+        arguments: ['@table.session']
         tags:
             - { name: kernel.event_listener, event: table.pre_set_data, method: onPreSetData }
     
     table.extension:
         class: EMC\TableBundle\Twig\TableExtension
-        arguments: [@twig, %emc_table.template%, %emc_table.extensions%]
+        arguments: ['@twig', '%emc_table.template%', '%emc_table.extensions%']
         tags:
             -  { name: twig.extension }
             
@@ -23,4 +23,4 @@ services:
         class: EMC\TableBundle\Table\Export\ExportRegistry
         arguments: [{}]
         calls:
-            - [setContainer, [@service_container]]
+            - [setContainer, ['@service_container']]

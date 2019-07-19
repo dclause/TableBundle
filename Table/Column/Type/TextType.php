@@ -2,7 +2,7 @@
 
 namespace EMC\TableBundle\Table\Column\Type;
 
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Text Column
@@ -20,13 +20,10 @@ class TextType extends AnchorType {
      * <li><b>anchor_route</b>  : string|null <i>Anchor route, default null.</i></li>
      * </ul>
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver, array $defaultOptions) {
+    public function setDefaultOptions(OptionsResolver $resolver, array $defaultOptions) {
         parent::setDefaultOptions($resolver, $defaultOptions);
-        
-        $resolver->setAllowedTypes(array(
-            'anchor_route' => array('null', 'string')
-        ));
-        
+
+        $resolver->setAllowedTypes('anchor_route', array('null', 'string'));
     }
     
     /**

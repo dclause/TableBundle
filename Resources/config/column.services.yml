@@ -1,40 +1,48 @@
 services:
     table.column.registry:
+        public: true
         class: EMC\TableBundle\Table\Column\ColumnRegistry
         arguments: [{}]
         calls:
-            - [setContainer, [@service_container]]
+            - [setContainer, ['@service_container']]
 
     table.column.factory:
+        public: true
         class: EMC\TableBundle\Table\Column\ColumnFactory
-        arguments: [@table.column.registry]
+        arguments: ['@table.column.registry']
 
     table.column.text:
+        public: true
         class: EMC\TableBundle\Table\Column\Type\TextType
         tags:
             -  { name: column.type, alias: text }
             
     table.column.anchor:
+        public: true
         class: EMC\TableBundle\Table\Column\Type\AnchorType
         tags:
             -  { name: column.type, alias: anchor }
             
     table.column.datetime:
+        public: true
         class: EMC\TableBundle\Table\Column\Type\DatetimeType
         tags:
             -  { name: column.type, alias: datetime }
                             
     table.column.icon:
+        public: true
         class: EMC\TableBundle\Table\Column\Type\IconType
         tags:
             -  { name: column.type, alias: icon }
             
     table.column.button:
+        public: true
         class: EMC\TableBundle\Table\Column\Type\ButtonType
         tags:
             -  { name: column.type, alias: button }
             
     table.column.image:
+        public: true
         class: EMC\TableBundle\Table\Column\Type\ImageType
         tags:
             -  { name: column.type, alias: image }

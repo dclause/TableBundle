@@ -2,7 +2,7 @@
 
 namespace EMC\TableBundle\Table\Column\Type;
 
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use EMC\TableBundle\Table\Column\ColumnInterface;
 
 /**
@@ -46,7 +46,7 @@ class DatetimeType extends ColumnType {
      * </ul>
      * <p>Note: If format is set, intl (date_format, time_format) will be ignored</p>
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver, array $defaultOptions) {
+    public function setDefaultOptions(OptionsResolver $resolver, array $defaultOptions) {
         parent::setDefaultOptions($resolver, $defaultOptions);
 
         $resolver->setDefaults(array(
@@ -56,26 +56,22 @@ class DatetimeType extends ColumnType {
             'locale' => \Locale::getDefault()
         ));
 
-        $resolver->addAllowedTypes(array(
-            'format' => array('null', 'string'),
-            'date_format' => 'string',
-            'time_format' => 'string',
-            'locale' => 'string'
-        ));
+        $resolver->addAllowedTypes('format', array('null', 'string'));
+        $resolver->addAllowedTypes('date_format', 'string');
+        $resolver->addAllowedTypes('time_format', 'string');
+        $resolver->addAllowedTypes('locale', 'string');
 
         $resolver->addAllowedValues(array(
             'date_format' => array_keys(self::$formats),
             'time_format' => array_keys(self::$formats),
         ));
         
-        $resolver->setNormalizers(array(
-            'params' => function($options, array $params) {
-        if (count($params) !== 1) {
-            throw new \InvalidArgumentException('params must contains one param');
-        }
-        return $params;
-    }
-        ));
+        $resolver->setNormalizer('params', function($options, array $params) {
+	        if (count($params) !== 1) {
+	            throw new \InvalidArgumentException('params must contains one param');
+	        }
+	        return $params;
+	    });
     }
 
     /**

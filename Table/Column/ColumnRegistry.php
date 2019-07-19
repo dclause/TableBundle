@@ -3,13 +3,17 @@
 namespace EMC\TableBundle\Table\Column;
 
 use Symfony\Component\DependencyInjection\ContainerAware;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
 /**
  * ColumnRegistry
  *
  * @author Chafiq El Mechrafi <chafiq.elmechrafi@gmail.com>
  */
-class ColumnRegistry extends ContainerAware implements ColumnRegistryInterface {
+class ColumnRegistry implements ColumnRegistryInterface, ContainerAwareInterface {
+
+	use ContainerAwareTrait;
 
     /**
      * @var array

@@ -111,14 +111,14 @@ PHP : Column type class
 ``` php
 <?php
 namespace Acme\MyBundle\Table\Column;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CustomType extends ColumnType {
     public function buildView(array &$view, ColumnInterface $column, array $data, array $options) {
         parent::buildView($view, $column, $data, $options);
         /* Add you column data view here. You can access to them in the twig extension widget */
     }
-    public function setDefaultOptions(OptionsResolverInterface $resolver) {
+    public function setDefaultOptions(OptionsResolver $resolver) {
         parent::setDefaultOptions($resolver);
         /* define you parameters here */
     }

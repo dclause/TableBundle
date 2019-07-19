@@ -2,7 +2,7 @@
 
 namespace EMC\TableBundle\Table\Column\Type;
 
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use EMC\TableBundle\Table\Column\ColumnInterface;
 
 /**
@@ -41,19 +41,17 @@ class ImageType extends AnchorType {
      * <li><b>alt</b>           : string <i>Alternative text if image does not exists.</i></li>
      * </ul>
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver, array $defaultOptions) {
+    public function setDefaultOptions(OptionsResolver $resolver, array $defaultOptions) {
         parent::setDefaultOptions($resolver, $defaultOptions);
         
         $resolver->setDefaults(array(
             'asset'   => null,
             'alt'   => ''
         ));
-        
-        $resolver->addAllowedTypes(array(
-            'anchor_route' => array('null', 'string'),
-            'asset'     => array('string', 'callable'),
-            'alt'       => 'string'
-        ));
+
+        $resolver->addAllowedTypes('anchor_route', array('null', 'string'));
+        $resolver->addAllowedTypes('asset', array('string', 'callable'));
+        $resolver->addAllowedTypes('alt', 'string');
     }
     
     /**

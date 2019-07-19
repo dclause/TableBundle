@@ -189,7 +189,7 @@
 {% endblock %}
 
 {% block pages %}
-    {{ include('EMCTableBundle:Table:pages.html.twig') }}
+    {{ include('@EMCTable/Table/pages.html.twig') }}
 {% endblock %}
 
 {% macro attributes(attrs) %}{% for key, val in attrs %} {{ key }}="{{ val }}"{% endfor %}{% endmacro %}

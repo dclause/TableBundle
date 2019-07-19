@@ -2,7 +2,7 @@
 
 namespace EMC\TableBundle\Table\Column\Type;
 
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use EMC\TableBundle\Table\Column\ColumnInterface;
 
 /**
@@ -36,7 +36,7 @@ class ButtonType extends IconType {
      * <li><b>desc</b>          : string|null <i>Button title</i></li>
      * </ul>
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver, array $defaultOptions) {
+    public function setDefaultOptions(OptionsResolver $resolver, array $defaultOptions) {
         parent::setDefaultOptions($resolver, $defaultOptions);
 
         $resolver->setDefaults(array(
@@ -44,12 +44,10 @@ class ButtonType extends IconType {
             'desc' => null
         ));
 
-        $resolver->setAllowedTypes(array(
-            'text' => array('null', 'string'),
-            'anchor_route' => array('null'), /* Button is not an anchor */
-            'icon' => array('null', 'string', 'callable'),
-            'desc' => array('null', 'string')
-        ));
+        $resolver->setAllowedTypes('text', array('null', 'string'));
+        $resolver->setAllowedTypes('anchor_route', array('null')); /* Button is not an anchor */
+        $resolver->setAllowedTypes('icon', array('null', 'string', 'callable'));
+        $resolver->setAllowedTypes('desc', array('null', 'string'));
     }
 
     /**

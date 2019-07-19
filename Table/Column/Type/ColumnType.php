@@ -2,7 +2,6 @@
 
 namespace EMC\TableBundle\Table\Column\Type;
 
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use EMC\TableBundle\Table\Column\ColumnBuilderInterface;
 use EMC\TableBundle\Table\Column\ColumnInterface;
@@ -61,7 +60,7 @@ abstract class ColumnType implements ColumnTypeInterface {
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver, array $defaultOptions) {
+    public function setDefaultOptions(OptionsResolver $resolver, array $defaultOptions) {
         
         $resolver->setDefaults(array(
             'name'      => '',
@@ -76,24 +75,20 @@ abstract class ColumnType implements ColumnTypeInterface {
             'allow_filter'  => false
         ));
 
-        $resolver->setAllowedTypes(array(
-            'name'          => 'string',
-            'title'         => 'string',
-            'params'        => array('string', 'array'),
-            'attrs'         => 'array',
-            'format'        => array('null', 'string', 'int', 'callable'),
-            'data'          => array('null', 'array'),
-            'default'       => array('null', 'string'),
-            'width'         => array('null', 'string'),
-            'allow_sort'    => array('bool', 'array'),
-            'allow_filter'  => array('bool', 'array')
-        ));
-        
-        $resolver->setNormalizers(array(
-            'params' => function(OptionsResolverInterface $resolver, $params) {
-                return is_string($params) ? array($params) : $params;
-            }
-        ));
+        $resolver->setAllowedTypes('name', 'string');
+        $resolver->setAllowedTypes('title', 'string');
+        $resolver->setAllowedTypes('params', array('string', 'array'));
+        $resolver->setAllowedTypes('attrs', 'array');
+        $resolver->setAllowedTypes('format', array('null', 'string', 'int', 'callable'));
+        $resolver->setAllowedTypes('data', array('null', 'array'));
+        $resolver->setAllowedTypes('default', array('null', 'string'));
+        $resolver->setAllowedTypes('width', array('null', 'string'));
+        $resolver->setAllowedTypes('allow_sort', array('bool', 'array'));
+        $resolver->setAllowedTypes('allow_filter', array('bool', 'array'));
+
+        $resolver->setNormalizer('params', function(OptionsResolver $resolver, $params) {
+            return is_string($params) ? array($params) : $params;
+        });
     }
 
     /**

@@ -4,6 +4,7 @@ namespace EMC\TableBundle\Tests\Twig;
 
 use EMC\TableBundle\Tests\AbstractUnitTest;
 use EMC\TableBundle\Twig\TableExtension;
+use Twig\TwigFunction;
 
 /**
  * TableExtensionTest
@@ -43,7 +44,7 @@ class TableExtensionTest extends AbstractUnitTest {
 
         foreach ($expectedFunctionsKeys as $function) {
             $this->assertArrayHasKey($function, $functions);
-            $this->assertInstanceOf('\Twig_Function_Method', $functions[$function]);
+            $this->assertInstanceOf('Twig\TwigFunction', $functions[$function]);
         }
     }
 

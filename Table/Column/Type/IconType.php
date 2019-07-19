@@ -2,7 +2,7 @@
 
 namespace EMC\TableBundle\Table\Column\Type;
 
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use EMC\TableBundle\Table\Column\ColumnInterface;
 
 /**
@@ -40,19 +40,17 @@ class IconType extends AnchorType {
      * <li><b>icon_family</b>   : string <i>Icon family (fa|icon|glyphicon|...). Default is defined bundle config.</i></li>
      * </ul>
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver, array $defaultOptions) {
+    public function setDefaultOptions(OptionsResolver $resolver, array $defaultOptions) {
         parent::setDefaultOptions($resolver, $defaultOptions);
         
         $resolver->setDefaults(array(
             'icon' => null,
             'icon_family' => $defaultOptions['icon_family']
         ));
-        
-        $resolver->addAllowedTypes(array(
-            'anchor_route' => array('null', 'string'),
-            'icon' => array('string', 'callable'),
-            'icon_family' => 'string'
-        ));
+
+        $resolver->addAllowedTypes('anchor_route', array('null', 'string'));
+        $resolver->addAllowedTypes('icon', array('string', 'callable'));
+        $resolver->addAllowedTypes('icon_family', 'string');
         
     }
     

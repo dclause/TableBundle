@@ -2,7 +2,7 @@
 
 namespace EMC\TableBundle\Table\Column\Type;
 
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\Options;
 use EMC\TableBundle\Table\Column\ColumnInterface;
 
@@ -44,7 +44,7 @@ class AnchorType extends ColumnType {
      * <li><b>anchor_title</b>  : string|null <i>Anchor title</i></li>
      * </ul>
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver, array $defaultOptions) {
+    public function setDefaultOptions(OptionsResolver $resolver, array $defaultOptions) {
         parent::setDefaultOptions($resolver, $defaultOptions);
 
         $resolver->setDefaults(array(
@@ -55,35 +55,31 @@ class AnchorType extends ColumnType {
             'anchor_title' => ''
         ));
 
-        $resolver->setAllowedTypes(array(
-            'anchor_route' => 'string',
-            'anchor_params' => array('null', 'array'),
-            'anchor_args' => 'array',
-            'anchor_text' => 'string',
-            'anchor_title' => 'string'
-        ));
+        $resolver->setAllowedTypes('anchor_route', 'string');
+        $resolver->setAllowedTypes('anchor_params', array('null', 'array'));
+        $resolver->setAllowedTypes('anchor_args', 'array');
+        $resolver->setAllowedTypes( 'anchor_text','string');
+        $resolver->setAllowedTypes('anchor_title','string');
 
-        $resolver->setNormalizers(array(
-            'anchor_params' => function(Options $options, $params) {
-                if (!is_array($params) || is_null($options['anchor_route'])) {
-                    return array();
-                } else if (count($params) === 0) {
-                    $params = array_keys($options['params']);
-                    foreach ($params as $name ) {
-                        if (!is_string($name)) {
-                            throw new \UnexpectedValueException('Anchor params must be an associative array');
-                        }
-                    }
-                } else  {
-                    $diff = array_diff($params, array_keys($options['params']));
-                    if (count($diff) > 0) {
-                        throw new \UnexpectedValueException('anchor_params (' . implode(',', $diff) . ') must be defined in params');
+        $resolver->setNormalizer('anchor_params', function(Options $options, $params) {
+            if (!is_array($params) || is_null($options['anchor_route'])) {
+                return array();
+            } else if (count($params) === 0) {
+                $params = array_keys($options['params']);
+                foreach ($params as $name ) {
+                    if (!is_string($name)) {
+                        throw new \UnexpectedValueException('Anchor params must be an associative array');
                     }
                 }
-                
-                return $params;
+            } else  {
+                $diff = array_diff($params, array_keys($options['params']));
+                if (count($diff) > 0) {
+                    throw new \UnexpectedValueException('anchor_params (' . implode(',', $diff) . ') must be defined in params');
+                }
             }
-        ));
+
+            return $params;
+        });
     }
 
     /**

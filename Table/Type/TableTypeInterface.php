@@ -2,7 +2,7 @@
 
 namespace EMC\TableBundle\Table\Type;
 
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Doctrine\Common\Persistence\ObjectManager;
 use EMC\TableBundle\Provider\QueryConfigInterface;
 use EMC\TableBundle\Table\TableBuilderInterface;
@@ -84,10 +84,10 @@ interface TableTypeInterface {
      * <li><b>export</b>       : array <i>Allowed Export services names. Example : array('pdf', 'excel')</i></li>
      * </ul>
      * 
-     * @param \Symfony\Component\OptionsResolver\OptionsResolverInterface $resolver
+     * @param \Symfony\Component\OptionsResolver\OptionsResolver $resolver
      * @param array $defaultOptions Default options defined in emc_table config
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver, array $defaultOptions);
+    public function setDefaultOptions(OptionsResolver $resolver, array $defaultOptions);
 
     /**
      * This method return the query builder.<br/>
@@ -104,7 +104,7 @@ interface TableTypeInterface {
     /**
      * Returns the configured options resolver used for this type.
      *
-     * @return OptionsResolverInterface The options resolver.
+     * @return OptionsResolver The options resolver.
      */
     public function getOptionsResolver();
     

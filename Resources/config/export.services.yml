@@ -1,6 +1,6 @@
 services:
     table.export.extension:
         class: EMC\TableBundle\Twig\TableExportExtension
-        arguments: [%emc_table.export.template%]
+        arguments: ['%emc_table.export.template%']
         tags:
             -  { name: twig.extension }

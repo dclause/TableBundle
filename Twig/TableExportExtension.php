@@ -3,13 +3,16 @@
 namespace EMC\TableBundle\Twig;
 
 use EMC\TableBundle\Table\TableView;
+use Twig\Environment;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
 /**
  * TableExtension
  * 
  * @author Chafiq El Mechrafi <chafiq.elmechrafi@gmail.com>
  */
-class TableExportExtension extends \Twig_Extension {
+class TableExportExtension extends AbstractExtension {
 
     /**
      * @var \Twig_Template
@@ -22,7 +25,7 @@ class TableExportExtension extends \Twig_Extension {
 
     public function getFunctions() {
         return array(
-            'table_export' => new \Twig_Function_Method($this, 'render', array(
+            'table_export' => new TwigFunction($this, 'render', array(
                 'is_safe' => array('all'),
                 'needs_environment' => true
                     ))
@@ -31,11 +34,11 @@ class TableExportExtension extends \Twig_Extension {
 
     /**
      * Render block $block with $table view's data.
-     * @param \Twig_Environment $twig
+     * @param Environment $twig
      * @param \EMC\TableBundle\Table\TableView $view
      * @return string
      */
-    public function render(\Twig_Environment $twig, TableView $view, $template=null) {
+    public function render(Environment $twig, TableView $view, $template=null) {
         $context = array_merge($twig->getGlobals(), $view->getData());
         return $twig->loadTemplate($template ?: $this->template)->renderBlock('table', $context);
     }

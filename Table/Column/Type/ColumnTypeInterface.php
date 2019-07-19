@@ -2,7 +2,7 @@
 
 namespace EMC\TableBundle\Table\Column\Type;
 
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use EMC\TableBundle\Table\Column\ColumnBuilderInterface;
 use EMC\TableBundle\Table\Column\ColumnInterface;
 
@@ -64,13 +64,13 @@ interface ColumnTypeInterface {
      * <li><b>allow_sort</b>    : bool|array <i>Allow sorting on the column. Array of parameters for orderBy or if true, the orderBy is "params". Otherwize (false) sort is disabled</i></li>
      * <li><b>allow_filter</b>  : bool|array <i>Allow filtering on the column. Array of parameters for building the where clause filter or if true, the parameters are "params". Otherwize (false) filtering is disabled</i></li>
      * </ul>
-     * @param \Symfony\Component\OptionsResolver\OptionsResolverInterface $resolver
+     * @param \Symfony\Component\OptionsResolver\OptionsResolver $resolver
      * @param array $defaultOptions Default options defined in emc_table config
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver, array $defaultOptions);
+    public function setDefaultOptions(OptionsResolver $resolver, array $defaultOptions);
 
     /**
-     * @return OptionsResolverInterface
+     * @return OptionsResolver
      */
     public function getOptionsResolver();
     
